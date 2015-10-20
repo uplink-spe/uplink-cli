@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="configure-view">
+	<COMMAND name="ip acl"
+		help="IPv4 Access lists"
+		view="configure-acl-view"
+		viewid="acl=${acl_num}">
+		<PARAM name="acl_num"
+			help="Access list number"
+			ptype="ACL_NUM"/>
+		<CONFIG priority="0x4101" pattern="^${__line}$"/>
+		<ACTION>
+		uspe-client acl create ${acl_num}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="ip6 acl"
+		help="IPv6 Access lists"
+		view="configure-acl6-view"
+		viewid="acl=${acl_num}">
+		<PARAM name="acl_num"
+			help="Access list number"
+			ptype="ACL_NUM"/>
+		<CONFIG priority="0x5101" pattern="^${__line}$"/>
+		<ACTION>
+		uspe-client acl6 create ${acl_num}
+		</ACTION>
+	</COMMAND>
+
+</VIEW>
+
+<VIEW name="configure-acl-view"
+	prompt="${SYSTEM_NAME}(config-acl-${acl})# "
+	depth="1">
+<!-- Inheritance -->
+
+	<NAMESPACE ref="configure-view"
+		help="false"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from map configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="no"
+		help="Negate a command or set its defaults"/>
+	
+	<COMMAND name="add"
+		help="false" completion="true">
+		<PARAM name="ip"
+			help="IP address"
+			ptype="IP_ADDR_MASK"/>
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>
+		uspe-client acl add ${acl} ${ip} 
+		</ACTION>
+	</COMMAND>
+
+	<COMMAND name="no add"
+		help="Set the IP address of an interface">
+		<CONFIG operation="unset" pattern="^${__line}$"/>
+		<PARAM name="ip"
+			help="IP address"
+			ptype="IP_ADDR_MASK"/>
+		<ACTION>
+			uspe-client map delete ${acl} ${ip}
+		</ACTION>
+	</COMMAND>
+
+
+</VIEW>
+
+	<!--=======================================================-->
+
+<VIEW name="configure-acl6-view"
+	prompt="${SYSTEM_NAME}(config-acl6-${acl})# "
+	depth="1">
+<!-- Inheritance -->
+
+	<NAMESPACE ref="configure-view"
+		help="false"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from map configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="no"
+		help="Negate a command or set its defaults"/>
+	
+	<COMMAND name="add"
+		help="false" completion="true">
+		<PARAM name="ip"
+			help="IP address"
+			ptype="IP6_ADDR_MASK"/>
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>
+			uspe-client acl6 add ${acl} ${ip}
+		</ACTION>
+	</COMMAND>
+
+	<COMMAND name="no add"
+		help="Set mapping to an IPv6">
+		<CONFIG operation="unset" pattern="^${__line}$"/>
+		<PARAM name="ip"
+			help="IPv6 address"
+			ptype="IP6_ADDR_MASK"/>
+		<ACTION>
+			uspe-client map6 delete ${acl} ${ip}
+		</ACTION>
+	</COMMAND>
+
+
+</VIEW>
+</CLISH_MODULE>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+	<COMMAND name="show ip6 acl"
+		help="Show IPv6 Access list">
+		<PARAM name="acl_id"
+			help="ACL number (0-60)"
+			ptype="UINT"/>
+		<ACTION>uspe-client acl6 show ${acl_id}</ACTION>
+	</COMMAND>
+	<COMMAND name="show ip6 acl all"
+		help="List created IPv6 ACLs">
+		<ACTION>uspe-client acl6 list</ACTION>
+	</COMMAND>
+
+
+	<COMMAND name="show ip acl"
+		help="Show IPv4 Access list">
+		<PARAM name="acl_id"
+			help="ACL number (0-60)"
+			ptype="UINT"/>
+		<ACTION>uspe-client acl show ${acl_id}</ACTION>
+	</COMMAND>
+	<COMMAND name="show ip acl all"
+		help="List created IPv4 ACLs list">
+		<ACTION>uspe-client acl list</ACTION>
+	</COMMAND>
+
+
+	<COMMAND name="clear ip acl"
+		help="Clear IPv4 acl">
+		<PARAM name="acl_id"
+			help="ACL number (0-60)"
+			ptype="UINT"/>
+		<ACTION>uspe-client acl clear ${acl_id}</ACTION>
+	</COMMAND>
+	
+	<COMMAND name="clear ip6 acl"
+		help="Clear IPv6 acl">
+		<PARAM name="acl_id"
+			help="ACL number (0-60)"
+			ptype="UINT"/>
+		<ACTION>uspe-client acl6 clear ${acl_id}</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip acl all"
+		help="Clear all IPv4 ACLs">
+		<ACTION>uspe-client acl destroy all</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip6 acl all"
+		help="Clear all IPv6 ACLs">
+		<ACTION>uspe-client acl6 destroy all</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="configure-view" restore="depth">
+	<NAMESPACE ref="enable-view" 
+		prefix="do"
+		help="true"
+		completion="true"/>
+
+	<COMMAND name="profile"
+		help="Profile configuration"
+		view="configure-profile-view"
+		viewid="prof=${profile_num}">
+		<PARAM name="profile_num"
+			help="Profile number"
+			ptype="PROFILE_NUM"/>
+		<PARAM name="name"
+			help="Profile name"
+			optional="true"
+			mode="subcommand"
+			ptype="SUBCOMMAND">
+			<PARAM name="pname"
+				help="Profile name"
+				ptype="STRING"/>
+		</PARAM>
+		<CONFIG priority="0x7101" pattern="^profile ${profile_num}"/>
+		<ACTION>
+			if test "x${pname}" = "x"; then
+				uspe-client profile create ${profile_num}
+			else 
+				uspe-client profile create ${profile_num} name ${pname}
+			fi
+		</ACTION>
+	</COMMAND>
+
+	<COMMAND name="commit profiles" help="Commit profiles configured">
+		<CONFIG priority="0x7901" pattern="^profile ${profile_num}"/>
+		<ACTION>
+			uspe-client profile commit
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+<VIEW name="configure-profile-view"
+	prompt="${SYSTEM_NAME}(cf-profile-${prof})# "
+	depth="1">
+
+	<NAMESPACE ref="configure-profile-view"
+		help="false"
+		completion="true"/>
+
+	<NAMESPACE ref="enable-view" 
+		prefix="do"
+		help="true"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from map configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="action" help="Profile action"
+		view="configure-profile-item-view"
+		viewid="prof_id=${prof}">
+
+		<PARAM name="act"
+				help="Action name"
+				ptype="PROFILE_ACTION" />
+		<PARAM name="act_par1"
+			help="Action parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="act_par2"
+			help="Action parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="act_par3"
+			help="Action parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="act_par4"
+			help="Action parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="act_par5"
+			help="Action parameters"
+			optional="true"
+			ptype="STRING" />
+		
+		<CONFIG pattern="^action order ${idx} "/>
+		<ACTION>
+		uspe-client profile add ${prof} action ${act} ${act_par1} ${act_par2} ${act_par3} ${act_par4} ${act_par5} 
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+<VIEW name="configure-profile-item-view"
+	prompt="${SYSTEM_NAME}(cf-profile-${prof_id}-item)# "
+	depth="2">
+	<NAMESPACE ref="enable-view" 
+		prefix="do"
+		help="true"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from map configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="match" help="Profile match rule"
+		completion="true">
+		<PARAM name="match_name"
+			help="Match type"
+			ptype="PROFILE_MATCH" />
+		<PARAM name="marg1"
+			help="Match parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="marg2"
+			help="Match parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="marg3"
+			help="Match parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="marg4"
+			help="Match parameters"
+			optional="true"
+			ptype="STRING" />
+		<PARAM name="marg5"
+			help="Match parameters"
+			optional="true"
+			ptype="STRING" />
+
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>
+		uspe-client profile add ${prof_id} match ${match_name} ${marg1} ${marg2} ${marg3} ${marg4} ${marg5} 
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+
+	<COMMAND name="show ip6 map all"
+		help="Show all IPv6 Proflie/Policer mappings in the system">
+		<ACTION>uspe-client map6 list</ACTION>
+	</COMMAND>
+
+	<COMMAND name="show ip map all"
+		help="Show all IPv4 Proflie/Policer mappings in the system">
+		<ACTION>uspe-client map list</ACTION>
+	</COMMAND>
+
+	<COMMAND name="show ip6 map"
+		help="Show all IPv6 Proflie/Policer mappings in the system">
+		<PARAM name="session-ip"
+			help="Session IP address"
+			ptype="IP6_ADDR"/>
+		<ACTION>uspe-client map6 lookup ${session-ip}</ACTION>
+	</COMMAND>
+
+	<COMMAND name="show ip map"
+		help="Show all IPv4 Proflie/Policer mappings in the system">
+		<PARAM name="session-ip"
+			help="Session IP address"
+			ptype="IP_ADDR"/>
+		<ACTION>uspe-client map lookup ${session-ip}</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip map" help="Clear IPv4 maps" />
+	<COMMAND name="clear ip6 map" help="Clear IPv6 maps" />
+
+	<COMMAND name="clear ip map all"
+		help="Clear all IPv4 mappings">
+		<ACTION>uspe-client map clear all</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip6 map all"
+		help="Clear all IPv6 mappings">
+		<ACTION>uspe-client map6 clear all</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

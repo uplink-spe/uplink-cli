@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+	<COMMAND name="show cg-nat"
+		help="Show CG NAT pool status">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"
+			optional="true"/>
+		<ACTION>
+		if [ "x${id}" = "x" ]; then
+			uspe-client nat list
+		else
+			echo "Show" 
+			uspe-client nat show ${id}
+		fi
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="show cg-nat flows"
+		help="Show CG NAT flows for a private IP">
+		<PARAM name="ip"
+			help="Private IP"
+			ptype="IP_ADDR"/>
+		<ACTION>
+		uspe-client nat flows ${ip}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="commit cg-nat"
+		help="Commit CG NAT pool(s)">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"
+			optional="true"/>
+		<ACTION>
+			uspe-client nat commit ${id}
+		</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear cg-nat"
+		help="Clear CG NAT pool(s)">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"
+			optional="true"/>
+		<ACTION>
+			uspe-client nat clear ${id}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="clear cg-nat flows"
+		help="Commit CG NAT pool(s)">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"/>
+		<ACTION>
+			uspe-client nat clear flows ${id}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="lookup cg-nat"
+		help="Lookup CG NAT flows" />
+
+	<COMMAND name="lookup cg-nat outside"
+		help="Lookup CG NAT translation">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"/>
+		<PARAM name="ip"
+			help="internal ip address"
+			ptype="IP_ADDR"/>
+		<ACTION>
+			uspe-client nat lookup ${id} ${ip}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="lookup cg-nat inside"
+		help="Lookup CG NAT translation">
+		<PARAM name="id"
+			help="NAT pool id"
+			ptype="UINT"/>
+		<PARAM name="ip"
+			help="external ip address"
+			ptype="IP_ADDR"/>
+		<PARAM name="port"
+			help="Public port number"
+			ptype="UINT"/>
+		<ACTION>
+			uspe-client nat lookup ${id} ${ip} ${port}
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

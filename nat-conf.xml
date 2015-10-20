@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="configure-view">
+	<COMMAND name="cg-nat"
+		help="CG NAT pool settings"/>
+	
+	<COMMAND name="cg-nat pool"
+		help="Create a nat pool"
+		view="configure-nat-view"
+		viewid="pool=${pool}" >
+		<PARAM name="pool"
+			help="pool number"
+			ptype="UINT"/>
+		<PARAM name="slot_size"
+			help="Pool slot size in bits"
+			mode="subcommand"
+			ptype="SUBCOMMAND">
+			<PARAM name="s_size"
+				help="pool slot size"
+				ptype="UINT"/>
+		</PARAM>
+		<PARAM name="pool_name"
+			help="Pool name"
+			optional="true"
+			mode="subcommand"
+			ptype="SUBCOMMAND">
+			<PARAM name="name"
+				help="pool name"
+				ptype="STRING"/>
+		</PARAM>
+		<CONFIG priority="0xB001" pattern="^cg-nat pool ${pool}"/>
+		<ACTION>
+			if test "x${name}" = "x"; then
+				uspe-client nat create ${pool} slot-size ${s_size}
+			else
+				uspe-client nat create ${pool} slot-size ${s_size} name ${name}
+			fi
+		</ACTION>
+	</COMMAND>
+	
+	<COMMAND name="no cg-nat"
+		help="Clear all nat config" completion="true">
+		<PARAM name="pool"
+			help="pool number"
+			optional="true"
+			ptype="UINT"/>
+		<CONFIG operation="unset" pattern="^cg-nat pool ${pool}"/>
+		<ACTION>
+			uspe-client nat clear ${pool}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="commit cg-nat"
+		help="Commit nat config" completion="true">
+		<PARAM name="pool"
+			help="pool number"
+			optional="true"
+			ptype="UINT"/>
+		<CONFIG pattern="^commit nat"/>
+		<ACTION>
+			uspe-client nat commit ${pool}
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+<VIEW name="configure-nat-view"
+	prompt="${SYSTEM_NAME}(config-nat-${pool})# "
+	depth="1">
+<!-- Inheritance -->
+
+	<NAMESPACE ref="configure-view"
+		help="false"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="no"
+		help="Negate a command or set its defaults"/>
+
+	<COMMAND name="public"
+		help="Add a public prefix to nat">
+		<PARAM name="ip"
+			help="Public IP address"
+			ptype="IP_ADDR_MASK" />
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>
+			uspe-client nat add public ${pool} ${ip}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="private"
+		help="Add a private prefix to nat">
+		<PARAM name="ip"
+			help="Private IP address"
+			ptype="IP_ADDR_MASK" />
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>
+			uspe-client nat add private ${pool} ${ip}
+		</ACTION>
+	</COMMAND>
+</VIEW>
+</CLISH_MODULE>

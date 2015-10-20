@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="configure-view">
+	<COMMAND name="topology"
+		help="Interface topology setting"
+		view="configure-topo-view">
+		<CONFIG priority="0x3001" pattern="^${__line}$"/>
+	</COMMAND>
+	
+	<COMMAND name="no topology"
+		help="Clear all topology" completion="true">
+		<CONFIG operation="unset" pattern="^topology"/>
+		<ACTION>
+			uspe-client topology interface flush
+			uspe-client topology vfilter 0-4095
+		</ACTION>
+	</COMMAND>
+</VIEW>
+
+<VIEW name="configure-topo-view"
+	prompt="${SYSTEM_NAME}(config-topo)# "
+	depth="1">
+<!-- Inheritance -->
+
+	<NAMESPACE ref="configure-view"
+		help="false"
+		completion="true"/>
+
+	<COMMAND name="exit"
+		help="Exit from configuration mode"
+		lock="false">
+		<ACTION builtin="clish_nested_up"/>
+	</COMMAND>
+
+	<COMMAND name="no"
+		help="Negate a command or set its defaults"/>
+	
+	<COMMAND name="interface"
+		help="Add an interface to topology" completion="true">
+		<PARAM name="name"
+			help="Interface name"
+			ptype="STRING"/>
+		<PARAM name="type"
+			help="L2 or L3 interface"
+			ptype="SUBCOMMAND"
+			mode="switch">
+			<PARAM name="l2"
+				help="L2 switched interface"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+			<PARAM name="l3"
+				help="L3 (routed) interface"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+			
+		</PARAM>
+		<PARAM name="direction"
+			help="Subscriber or Internet direction"
+			mode="switch"
+			ptype="SUBCOMMAND">
+			<PARAM name="subscriber"
+				help="Clients/Subscribers faced interface"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+			<PARAM name="internet"
+				help="Internet (uplink) facing interface"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+		</PARAM>
+		<PARAM name="key"
+			help="ip/qinq - IP or QinQ tag key"
+			mode="switch"
+			ptype="SUBCOMMAND">
+			<PARAM name="ip"
+				help="IP address is a key for customers identity"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+			<PARAM name="qinq"
+				help="QinQ/dot1q tag is a customer identity"
+				mode="subcommand"
+				ptype="SUBCOMMAND"/>
+		</PARAM>
+		<CONFIG pattern="^topology interface ${name} "/>
+		<ACTION>
+			uspe-client topology interface ${type} ${direction} ${name} ${key}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="vfilter"
+		help="false" completion="true">
+		<PARAM name="list"
+			help="List of vlans to operate on (default all)"
+			ptype="STRING"/>
+		<CONFIG pattern="^vfilter"/>
+		<ACTION>
+			uspe-client topology vfilter ${list}
+		</ACTION>
+	</COMMAND>
+	<COMMAND name="no vfilter"
+		help="Disable vlan filter (set to 0-4095)" completion="true">
+		<CONFIG operation="unset" pattern="^vfilter"/>
+		<ACTION>
+			uspe-client topology vfilter 0-4095
+		</ACTION>
+	</COMMAND>
+
+</VIEW>
+</CLISH_MODULE>

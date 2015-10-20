@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+	<COMMAND name="show ip6 session"
+		help="Brief IPv6 session info">
+		<PARAM name="session-ip"
+			help="Session IP6 address"
+			ptype="IP6_ADDR"/>
+		<ACTION>uspe-client session6 show ${session-ip}</ACTION>
+	</COMMAND>
+	<COMMAND name="show ip6 session all"
+		help="Brief IPv6 session list">
+		<ACTION>uspe-client session6 show all</ACTION>
+	</COMMAND>
+
+	<COMMAND name="show ip session"
+		help="Brief session info">
+		<PARAM name="session-ip"
+			help="Session IP address"
+			ptype="IP_ADDR"/>
+		<ACTION>uspe-client session show ${session-ip}</ACTION>
+	</COMMAND>
+	<COMMAND name="show ip session all"
+		help="Brief session list">
+		<ACTION>uspe-client session show all</ACTION>
+	</COMMAND>
+
+
+
+	<COMMAND name="clear ip session"
+		help="Clear IPv4 session">
+		<PARAM name="session-ip"
+			help="Session IPv4 address"
+			ptype="IP_ADDR"/>
+		<ACTION>uspe-client session clear ${session-ip}</ACTION>
+	</COMMAND>
+	
+	<COMMAND name="clear ip6 session"
+		help="Clear IPv6 session">
+		<PARAM name="session-ip"
+			help="Session IP6 address"
+			ptype="IP6_ADDR"/>
+		<ACTION>uspe-client session6 clear ${session-ip}</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip session all"
+		help="Clear all IPv4 sessions">
+		<ACTION>uspe-client session clear all</ACTION>
+	</COMMAND>
+
+	<COMMAND name="clear ip6 session all"
+		help="Clear all IPv6 sessions">
+		<ACTION>uspe-client session6 clear all</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>

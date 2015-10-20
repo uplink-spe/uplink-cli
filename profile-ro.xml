@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+	<COMMAND name="show profile"
+		help="Profile entries">
+		<PARAM name="profile_id"
+			help="Profile number"
+			ptype="UINT"/>
+		<ACTION>uspe-client profile show ${profile_id}</ACTION>
+	</COMMAND>
+	<COMMAND name="show profile all"
+		help="Show all profile entries">
+		<ACTION>uspe-client profile show</ACTION>
+	</COMMAND>
+	<COMMAND name="show profile all brief"
+		help="Brief Profile list">
+		<ACTION>uspe-client profile list</ACTION>
+	</COMMAND>
+
+</VIEW>
+
+</CLISH_MODULE>

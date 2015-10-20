@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+	<COMMAND name="show policer"
+		help="Policer entries">
+		<PARAM name="policer_id"
+			help="Policer number"
+			ptype="UINT"/>
+		<ACTION>uspe-client policer show ${policer_id}</ACTION>
+	</COMMAND>
+	<COMMAND name="show policer all"
+		help="Show all policer entries">
+		<ACTION>uspe-client policer show</ACTION>
+	</COMMAND>
+	<COMMAND name="show policer all brief"
+		help="Brief Policer list">
+		<ACTION>uspe-client policer list</ACTION>
+	</COMMAND>
+
+</VIEW>
+
+</CLISH_MODULE>

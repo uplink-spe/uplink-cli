@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+	<!--=======================================================-->
+
+<VIEW name="enable-view">
+
+	<COMMAND name="update ip session"
+		help="Update session info">
+		<PARAM name="session-ip"
+			help="Session IP address"
+			ptype="IP_ADDR"/>
+		<PARAM name="profile"
+			help="Profile number"
+			ptype="UINT"/>
+		<PARAM name="policer"
+			help="Policer number"
+			ptype="UINT"/>
+		<PARAM name="master_ip"
+			help="Mster IP address"
+			ptype="IP_ADDR"
+			optional="true"/>
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>uspe-client session update ${session-ip} ${profile} ${policer} ${master_ip}</ACTION>
+	</COMMAND>
+
+	<COMMAND name="update ip6 session"
+		help="Brief IPv6 session info">
+		<PARAM name="session-ip"
+			help="Session IP6 address"
+			ptype="IP6_ADDR"/>
+		<PARAM name="profile"
+			help="Profile number"
+			ptype="UINT"/>
+		<PARAM name="policer"
+			help="Policer number"
+			ptype="UINT"/>
+		<PARAM name="master_ip"
+			help="Mster IP address"
+			ptype="IP_ADDR"
+			optional="true"/>
+		<CONFIG pattern="^${__line}$"/>
+		<ACTION>uspe-client session6 show ${session-ip} ${profile} ${policer} ${master_ip}</ACTION>
+	</COMMAND>
+</VIEW>
+
+</CLISH_MODULE>
